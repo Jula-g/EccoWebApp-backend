@@ -40,20 +40,20 @@ The ZeroWaste Eco Webapp is a platform that encourages sustainable living by red
    - For example, someone may offer a lamp in exchange for books or other requested items.
    - Users can communicate through *in-app messaging* to negotiate trades or finalize terms.
      
-### 6. *Local Focus and Map Integration*
+### 5. *Local Focus and Map Integration*
    - To promote local exchanges, the app includes a *map feature* that shows available items in a user’s vicinity.
    - *Geo-tagging*: Users can search for items based on location, filtering by proximity to reduce transportation-related emissions.
 
 
-### 7. *Sustainability Blog and Tips*
+### 6. *Sustainability Blog and Tips*
    - The app features a blog that provides users with *eco-friendly tips*, zero-waste lifestyle guides, and DIY ideas for reusing and repurposing old items.
    - Content includes articles on how to *reduce household waste*, upcycling tutorials, and sustainable living ideas.
 
-### 9. *Community Engagement and Forums*
+### 7. *Community Engagement and Forums*
    - The app will have a *community section* where users can discuss sustainability, zero-waste challenges, and tips on reducing waste in everyday life.
    - Users can ask questions, share success stories, and participate in *community-led initiatives* like local clean-up drives or donation events.
 
-(7-9 combined)
+(6-7 combined)
 ---
 ## *Design and User Experience*
 The design will be simple, intuitive, and eco-friendly:
