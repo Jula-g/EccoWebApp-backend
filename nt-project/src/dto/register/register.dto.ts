@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { UserRole } from '../../common-types/user-role.enum.ts';
+import { UserRole } from '../../common-types/user-role.enum';
 
 export class RegisterDto {
   @IsNotEmpty({ message: 'Username is required' })
@@ -8,7 +8,7 @@ export class RegisterDto {
   @IsNotEmpty({ message: 'Password is required' })
   password: string;
 
-  role: UserRole = UserRole.ROLE_READER; 
+  role: UserRole = UserRole.ROLE_USER; 
 
   @IsNotEmpty({ message: 'Email is required' })
   @IsEmail({}, { message: 'Invalid email address' })
