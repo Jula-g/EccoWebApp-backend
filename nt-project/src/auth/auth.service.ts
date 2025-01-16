@@ -3,7 +3,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { RegisterResponseDto } from '../dto/register/register-response.dto';
 import { LoginResponseDto } from '../dto/login/login-response.dto';
 import { UserAlreadyExistsException } from '../exceptions/user-already-exists.exception';
-import { UserRole } from '../common-types/user-role.enum';
+import { UserRole } from '../enums/user-role.enum';
 import { AuthRepository } from '../repositories/auth.repository';
 import { UserRepository } from '../repositories/user.repository';
 import { JwtService } from '../security/jwt.service';
@@ -19,15 +19,15 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<RegisterResponseDto> {
-    const { username, password, email, name, lastName } = registerDto;
+    const { username, password, email, name, lastName, phoneNumber } = registerDto;
   
     const existingAuth = await this.authRepository.findByUsername(username);
     if (existingAuth) {
       throw new UserAlreadyExistsException(username);
     }
   
-    const user = await this.userRepository.save({ email, name, lastName });
-  
+    const user = await this.userRepository.save({ email, name, lastName, phoneNumber });
+
     const auth = {
       username,
       password: await bcrypt.hash(password, 10),

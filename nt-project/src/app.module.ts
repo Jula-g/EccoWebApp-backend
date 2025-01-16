@@ -12,10 +12,13 @@ import { AuthRepository } from './repositories/auth.repository';
 import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './firebase/posts/posts.module';
 import { JwtModule } from './security/jwt.module';
+import { ProductService } from './product/product.service';
+import { ProductController } from './product/product.controller';
+import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ cache: true }), JwtModule, FirebaseModule, AuthModule, UserModule, PostsModule],
-  controllers: [AppController, UserController, AuthController],
-  providers: [AppService, UserService, AuthService, AuthRepository],
+  imports: [ConfigModule.forRoot({ cache: true }), JwtModule, FirebaseModule, AuthModule, UserModule, PostsModule, ProductModule],
+  controllers: [AppController, UserController, AuthController, ProductController],
+  providers: [AppService, UserService, AuthService, AuthRepository, ProductService],
 })
 export class AppModule {}

@@ -11,6 +11,6 @@ import { JwtModule } from 'src/security/jwt.module';
     imports: [UserModule, FirebaseModule, JwtModule],
     controllers: [AuthController],
     providers: [AuthService, AuthRepository, UserRepository],
-    exports: [AuthService],
+    exports: [AuthService, AuthRepository],
 })
 export class AuthModule {}
