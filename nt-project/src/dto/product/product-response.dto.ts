@@ -14,7 +14,7 @@ export class ProductResponseDto {
         city: string;
         zip: string;
       },
-      public images: string[],
+      public images: string[] | Buffer[],
       public createdAt: Date,
       public updatedAt: Date,    
       public transactionType: string,

@@ -7,7 +7,7 @@ import { Category } from '../../enums/category.enum';
 import { Subcategory } from '../../enums/subcategory.enum';
 
 
-export class CreateProductDto {
+export class  CreateProductDto {
     @IsString()
     @IsNotEmpty()
     name: string;

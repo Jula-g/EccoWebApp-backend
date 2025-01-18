@@ -1,7 +1,7 @@
 import { ProductService } from './product.service';
 import { Subcategory } from 'src/enums/subcategory.enum';
 import { CreateProductDto } from 'src/dto/product/create-product.dto';
-import { Controller, Delete, Get, Patch, Post, Param, Body, Request, UseInterceptors, UploadedFiles, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Post, Param, Body, Request, UseInterceptors, UploadedFiles, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/security/jwt-auth.guard';
 
@@ -9,17 +9,31 @@ import { JwtAuthGuard } from 'src/security/jwt-auth.guard';
 export class ProductController {
     constructor(private readonly productService: ProductService) {
     }
-
     @Post()
     @UseGuards(JwtAuthGuard)
-    @UseInterceptors(FilesInterceptor('images'))  
+    @UseInterceptors(FilesInterceptor('images'))
     async createProduct(
-        @Request() req: any,  
+        @Request() req: any,
         @Body() createProductDto: CreateProductDto,
         @UploadedFiles() images: Express.Multer.File[],
     ) {
-        const firebaseUid = req.user.firebaseUid;  
-        return await this.productService.createProduct(firebaseUid, createProductDto, images);
+        const userId = req.user?.userId;
+        if (!userId) {
+            throw new UnauthorizedException('User is not authenticated.');
+        }
+        return await this.productService.createProduct(userId, createProductDto, images);
+    }
+
+    @Patch(':firebaseUid/:productId')
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FilesInterceptor('images'))
+    async updateProduct(
+      @Param('firebaseUid') firebaseUid: string,
+      @Param('productId') productId: string,
+      @Body() updateProductDto: Partial<CreateProductDto>,
+      @UploadedFiles() images?: Express.Multer.File[],
+    ) {
+      return await this.productService.updateProduct(firebaseUid, productId, updateProductDto, images);
     }
 
     @Get()
@@ -35,15 +49,6 @@ export class ProductController {
     @Get('user/:userId')
     async getProductsByUserId(userId: string) {
         return await this.productService.getProductsByUserId(userId);
-    }
-
-    @Patch(':firebaseUid/:productId')
-    async updateProduct(
-        @Param('firebaseUid') firebaseUid: string,
-        @Param('productId') productId: string,
-        @Body() updateProductDto: Partial<CreateProductDto>,
-    ) {
-        return await this.productService.updateProduct(firebaseUid, productId, updateProductDto);
     }
 
     @Delete(':firebaseUid/:productId')

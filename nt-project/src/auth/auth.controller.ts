@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpException, HttpStatus, Delete } from '@nestjs/common';
+import { Body, Controller, Post, HttpException, HttpStatus, Delete, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from '../dto//register/register.dto'; 
 import { LoginDto } from '../dto//login/login.dto';      
@@ -37,7 +37,7 @@ export class AuthController {
   }
 
   @Delete('user/userId')
-  async deleteUser(@Body() userId: string): Promise<void> {
+  async deleteUser(@Param() userId: string): Promise<void> {
     try {
       await this.authService.delete(userId);
     } catch (error) {

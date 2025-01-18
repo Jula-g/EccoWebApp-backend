@@ -14,27 +14,30 @@ export class OrderService {
   ) {}
 
   async createOrder(user: User, createOrderDto: CreateOrderDto): Promise<Order> {
-    const productId = createOrderDto.product.id;
-    const product = await this.productRepository.findById(productId);
+    const productId  = createOrderDto.productId;  
+    const orderedProduct = await this.productRepository.findById(productId);  
     
-    if (!product) {
+    if (!orderedProduct) {
       throw new NotFoundException(`Product with ID ${productId} not found.`);
     }
 
-    if (product.status !== 'Available') {
+    if (orderedProduct.status !== 'Available') {
       throw new BadRequestException(`Product with ID ${productId} is not available.`);
     }
-    else {
-        product.status = ProductStatus.SOLD;
-        await this.productRepository.update(productId, product);
+
+    if (orderedProduct.user.firebaseUid === user.firebaseUid) {
+      throw new BadRequestException(`You cannot order your own product.`);
     }
 
-    const totalPrice = product.price;
+    orderedProduct.status = ProductStatus.SOLD;
+    await this.productRepository.update(productId, orderedProduct);
+
+    const totalPrice = orderedProduct.price; 
 
     const newOrder = await this.orderRepository.save({
-      user, 
-      product, 
-      total: totalPrice, 
+      user,
+      product: orderedProduct,
+      total: totalPrice,
       createdAt: new Date(),
     });
 
@@ -63,10 +66,10 @@ export class OrderService {
       throw new NotFoundException(`Order with ID ${orderId} not found.`);
     }
 
-    if (updateOrderDto.product.id) {
-      const product = await this.productRepository.findById(updateOrderDto.product.id);
+    if (updateOrderDto.productId) {
+      const product = await this.productRepository.findById(updateOrderDto.productId);
       if (!product) {
-        throw new NotFoundException(`Product with ID ${updateOrderDto.product.id} not found.`);
+        throw new NotFoundException(`Product with ID ${updateOrderDto.productId} not found.`);
       }
       existingOrder.product = product;
       existingOrder.total = product.price;

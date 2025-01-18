@@ -1,12 +1,10 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Request, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Order } from 'src/entities/order.entity';
-import { User } from 'src/entities/user.entity';
 import { CreateOrderDto } from 'src/dto/order/create-order.dto';
 import { JwtAuthGuard } from 'src/security/jwt-auth.guard';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
 
-  @Controller('/api/order')
+  @Controller('/api/orders')
   @UseGuards(JwtAuthGuard)
   export class OrderController {
     constructor(private readonly orderService: OrderService) {}
@@ -14,10 +12,12 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async createOrder(
-      @CurrentUser() user: User,
+      @Request() req: any,
       @Body() createOrderDto: CreateOrderDto,
     ): Promise<Order> {
+      const user = req.user;
       return this.orderService.createOrder(user, createOrderDto);
+     
     }
   
     @Get()

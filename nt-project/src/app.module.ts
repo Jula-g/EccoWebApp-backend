@@ -15,10 +15,13 @@ import { JwtModule } from './security/jwt.module';
 import { ProductService } from './product/product.service';
 import { ProductController } from './product/product.controller';
 import { ProductModule } from './product/product.module';
+import { OrderService } from './order/order.service';
+import { OrderController } from './order/order.controller';
+import { OrderModule } from './order/order.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ cache: true }), JwtModule, FirebaseModule, AuthModule, UserModule, PostsModule, ProductModule],
-  controllers: [AppController, UserController, AuthController, ProductController],
-  providers: [AppService, UserService, AuthService, AuthRepository, ProductService],
+  imports: [ConfigModule.forRoot({ cache: true }), JwtModule, FirebaseModule, AuthModule, UserModule, PostsModule, ProductModule, OrderModule],
+  controllers: [AppController, UserController, AuthController, ProductController, OrderController],
+  providers: [AppService, UserService, AuthService, AuthRepository, ProductService, OrderService],
 })
 export class AppModule {}

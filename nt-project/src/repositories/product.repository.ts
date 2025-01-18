@@ -12,6 +12,10 @@ export class ProductRepository {
     }
 
     async findById(productId: string): Promise<Product | null> {
+        if (!productId) {
+            throw new Error('Product ID is required');
+          }
+        
         const doc = await this.collection.doc(productId).get();
         if (!doc.exists) {
             return null;
@@ -35,6 +39,10 @@ export class ProductRepository {
     }
 
     async save(product: Partial<Product>): Promise<Product> {
+        if (product.images && product.images.some(img => img.length > 1048487)) {
+            throw new Error('Image size exceeds Firestore limit');
+        }
+    
         const productWithDefaults = {
             ...product,
             createdAt: product.createdAt || new Date(),
@@ -44,14 +52,15 @@ export class ProductRepository {
         const doc = await docRef.get();
         return { firebaseUid: doc.id, ...doc.data() } as Product;
     }
-
+    
+      
     async update(productId: string, product: Partial<Product>): Promise<Product> {
         const docRef = this.collection.doc(productId);
         await docRef.update(product);
         const updatedDoc = await docRef.get();
         return { firebaseUid: updatedDoc.id, ...updatedDoc.data() } as Product;
     }
-
+      
     async delete(productId: string): Promise<void> {
         await this.collection.doc(productId).delete();
     }

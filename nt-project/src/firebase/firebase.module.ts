@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import * as admin from 'firebase-admin';
 import { FirebaseRepository } from './firebase.repository';
 
@@ -23,11 +23,6 @@ const firestoreProvider = {
   inject: ['FIREBASE_APP'],
 };
 
-const storageProvider = {
-  provide: 'FIREBASE_STORAGE',
-  useFactory: (firebaseApp: admin.app.App) => firebaseApp.storage().bucket(),
-  inject: ['FIREBASE_APP'],
-};
 
 
 @Module({
@@ -37,7 +32,7 @@ const storageProvider = {
       isGlobal: true,
     }),
   ],
-  providers: [firebaseProvider, firestoreProvider, FirebaseRepository, storageProvider],
-  exports: [FirebaseRepository, firestoreProvider, storageProvider],
+  providers: [firebaseProvider, firestoreProvider, FirebaseRepository],
+  exports: [FirebaseRepository, firestoreProvider],
 })
 export class FirebaseModule {}

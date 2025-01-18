@@ -6,7 +6,7 @@ import { ProductStatus } from "src/enums/status.enum";
 import { TransactionType } from "src/enums/transaction.enum";
 
 export interface Product {
-    id: number;
+    id: string;
     name: string;
     category: Category;
     subcategory: Subcategory;
