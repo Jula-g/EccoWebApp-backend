@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import * as admin from 'firebase-admin';
 import { FirebaseRepository } from './firebase.repository';
 
@@ -11,7 +11,8 @@ const firebaseProvider = {
 
     return admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://nt-project-6013f-default-rtdb.europe-west1.firebasedatabase.app"
+      databaseURL: "https://nt-project-6013f-default-rtdb.europe-west1.firebasedatabase.app",
+      storageBucket: "nt-project-6013f.appspot.com",
     });
   }
 };
@@ -23,12 +24,15 @@ const firestoreProvider = {
 };
 
 
+
 @Module({
-  imports: [ConfigModule.forRoot({
-    envFilePath: '../../process.env',
-    isGlobal: true,
-  })],
-  providers: [firebaseProvider, FirebaseRepository, firestoreProvider],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '../../process.env',
+      isGlobal: true,
+    }),
+  ],
+  providers: [firebaseProvider, firestoreProvider, FirebaseRepository],
   exports: [FirebaseRepository, firestoreProvider],
 })
 export class FirebaseModule {}

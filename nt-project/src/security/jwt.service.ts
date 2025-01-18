@@ -14,4 +14,12 @@ export class JwtService {
     };
     return jwt.sign(payload, this.secretKey, { expiresIn: this.expiresIn });
   }
+
+  verify(token: string) {
+    try {
+      return jwt.verify(token, this.secretKey); 
+    } catch (error) {
+      throw new Error('Invalid token');
+    }
+  }
 }
