@@ -18,10 +18,13 @@ import { ProductModule } from './product/product.module';
 import { OrderService } from './order/order.service';
 import { OrderController } from './order/order.controller';
 import { OrderModule } from './order/order.module';
+import { MatchService } from './match/match.service';
+import { MatchModule } from './match/match.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ cache: true }), JwtModule, FirebaseModule, AuthModule, UserModule, PostsModule, ProductModule, OrderModule],
+  imports: [ConfigModule.forRoot({ cache: true }), JwtModule, FirebaseModule, AuthModule, UserModule, PostsModule, ProductModule, OrderModule, MatchModule, LikeModule],
   controllers: [AppController, UserController, AuthController, ProductController, OrderController],
-  providers: [AppService, UserService, AuthService, AuthRepository, ProductService, OrderService],
+  providers: [AppService, UserService, AuthService, AuthRepository, ProductService, OrderService, MatchService],
 })
 export class AppModule {}
