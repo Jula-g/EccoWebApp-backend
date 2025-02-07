@@ -68,7 +68,6 @@ export class AuthService {
     return new LoginResponseDto(token, auth.userId);
   }
 
-
   async delete(userId: string): Promise<void> {
     await this.authRepository.deleteByUserId(userId);
   }
