@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repository';
-import { AuthRepository } from '../repositories/auth.repository'; 
+import { AuthRepository } from '../repositories/auth.repository';
 import { GetUserDto } from '../dto/user/get-user.dto';
 import { PatchUserDto } from '../dto/user/patch-user.dto';
 import { PatchUserResponseDto } from '../dto/user/patch-user-response.dto';
@@ -10,10 +10,10 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authRepository: AuthRepository,
-  ) {}
+  ) { }
 
   async getUserByUsername(username: string): Promise<GetUserDto> {
-    const auth = await this.authRepository.findByUsername(username); 
+    const auth = await this.authRepository.findByUsername(username);
     if (!auth) {
       throw new NotFoundException(`User with username ${username} not found`);
     }
@@ -45,7 +45,7 @@ export class UserService {
     if (dto.name) user.name = dto.name;
     if (dto.lastName) user.lastName = dto.lastName;
 
-    const updatedUser = await this.userRepository.update(firebaseUid, user); 
+    const updatedUser = await this.userRepository.update(firebaseUid, user);
     return new PatchUserResponseDto(updatedUser.firebaseUid, updatedUser.name, updatedUser.lastName, updatedUser.email);
   }
 }
