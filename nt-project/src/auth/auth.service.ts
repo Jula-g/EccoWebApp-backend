@@ -65,10 +65,22 @@ export class AuthService {
       user: { id: auth.userId },
     });
 
+    console.log('userID:', auth.userId);
     return new LoginResponseDto(token, auth.userId);
   }
 
+
   async delete(userId: string): Promise<void> {
     await this.authRepository.deleteByUserId(userId);
+  }
+
+  async verifyToken(token: string): Promise<boolean> {
+    try {
+      this.jwtService.verify(token);
+      return true;
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return false;
+    }
   }
 }
