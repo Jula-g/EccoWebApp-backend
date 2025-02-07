@@ -65,7 +65,7 @@ export class AuthService {
       user: { id: auth.userId }, 
     });
   
-    return new LoginResponseDto(token, auth.id);
+    return new LoginResponseDto(token, auth.userId);
   }
   
 
