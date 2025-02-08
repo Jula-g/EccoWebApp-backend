@@ -9,10 +9,9 @@ import { UserRepository } from 'src/repositories/user.repository';
 @Injectable()
 export class ProductService {
   constructor(private readonly productRepository: ProductRepository,
-              private readonly userRepository: UserRepository
-  ) {}
+    private readonly userRepository: UserRepository
+  ) { }
 
-  
   private async compressImage(buffer: Buffer): Promise<string> {
     const compressedBuffer = await sharp(buffer)
       .resize({ width: 800 })
@@ -32,21 +31,22 @@ export class ProductService {
   async createProduct(firebaseUid: string, createProductDto: CreateProductDto, images: Express.Multer.File[]): Promise<ProductResponseDto> {
     const user = await this.userRepository.findByFirebaseUid(firebaseUid);
     if (!user) {
-        throw new NotFoundException(`User with firebaseUid ${firebaseUid} not found.`);
+      throw new NotFoundException(`User with firebaseUid ${firebaseUid} not found.`);
     }
 
     const base64Images = await this.uploadImagesToFirebase(images);
 
     const newProduct = await this.productRepository.save({
-        ...createProductDto,
-        images: base64Images,
-        user, 
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      ...createProductDto,
+      images: base64Images,
+      user,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
 
     return new ProductResponseDto(
+      newProduct.id,
       newProduct.name,
       newProduct.category,
       newProduct.subcategory,
@@ -88,6 +88,7 @@ export class ProductService {
     });
 
     return new ProductResponseDto(
+      updatedProduct.id,
       updatedProduct.name,
       updatedProduct.category,
       updatedProduct.subcategory,
@@ -107,34 +108,37 @@ export class ProductService {
 
   async getAllProducts(): Promise<ProductResponseDto[]> {
     const products = await this.productRepository.findAll();
+    console.log('products returned in prod.service:', products);
 
     return products.map(product => {
-        const base64Images = product.images; 
-        
-        return new ProductResponseDto(
-            product.name,
-            product.category,
-            product.subcategory,
-            product.condition,
-            product.style,
-            product.description,
-            product.user?.firebaseUid || null, 
-            product.status,
-            product.price,
-            product.adress,
-            base64Images,
-            product.createdAt,
-            product.updatedAt,
-            product.transactionType
-        );
+      const base64Images = product.images;
+
+      return new ProductResponseDto(
+        product.id,
+        product.name,
+        product.category,
+        product.subcategory,
+        product.condition,
+        product.style,
+        product.description,
+        product.user?.firebaseUid || null,
+        product.status,
+        product.price,
+        product.adress,
+        base64Images,
+        product.createdAt,
+        product.updatedAt,
+        product.transactionType
+      );
     });
-}
+  }
 
 
   async getProductsBySubcategory(subcategory: Subcategory): Promise<ProductResponseDto[]> {
     const products = await this.productRepository.findAllBySubcategory(subcategory);
     return products.map(product =>
       new ProductResponseDto(
+        product.id,
         product.name,
         product.category,
         product.subcategory,
@@ -157,6 +161,7 @@ export class ProductService {
     const products = await this.productRepository.findAllByUserId(userId);
     return products.map(product =>
       new ProductResponseDto(
+        product.id,
         product.name,
         product.category,
         product.subcategory,

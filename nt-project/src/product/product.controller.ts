@@ -28,12 +28,12 @@ export class ProductController {
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FilesInterceptor('images'))
     async updateProduct(
-      @Param('firebaseUid') firebaseUid: string,
-      @Param('productId') productId: string,
-      @Body() updateProductDto: Partial<CreateProductDto>,
-      @UploadedFiles() images?: Express.Multer.File[],
+        @Param('firebaseUid') firebaseUid: string,
+        @Param('productId') productId: string,
+        @Body() updateProductDto: Partial<CreateProductDto>,
+        @UploadedFiles() images?: Express.Multer.File[],
     ) {
-      return await this.productService.updateProduct(firebaseUid, productId, updateProductDto, images);
+        return await this.productService.updateProduct(firebaseUid, productId, updateProductDto, images);
     }
 
     @Get()
@@ -42,12 +42,12 @@ export class ProductController {
     }
 
     @Get('subcategory/:subcategory')
-    async getProductsBySubcategory(subcategory: Subcategory) {
+    async getProductsBySubcategory(@Param('subcategory') subcategory: Subcategory) {
         return await this.productService.getProductsBySubcategory(subcategory);
     }
 
     @Get('user/:userId')
-    async getProductsByUserId(userId: string) {
+    async getProductsByUserId(@Param('userId') userId: string) {
         return await this.productService.getProductsByUserId(userId);
     }
 

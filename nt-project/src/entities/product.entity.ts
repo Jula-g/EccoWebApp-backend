@@ -25,4 +25,4 @@ export interface Product {
     createdAt: Date;
     updatedAt?: Date;
     transactionType: TransactionType;
-  }
+}
