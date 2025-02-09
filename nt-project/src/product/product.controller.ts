@@ -51,6 +51,11 @@ export class ProductController {
         return await this.productService.getProductsByUserId(userId);
     }
 
+    @Get(':productId')
+    async getProductById(@Param('productId') productId: string) {
+        return await this.productService.getProductById(productId);
+    }
+
     @Delete(':firebaseUid/:productId')
     async deleteProduct(
         @Param('firebaseUid') firebaseUid: string,

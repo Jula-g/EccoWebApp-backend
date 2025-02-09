@@ -180,6 +180,27 @@ export class ProductService {
     );
   }
 
+  async getProductById(productId: string): Promise<ProductResponseDto> {
+    const product = await this.productRepository.findById(productId);
+    return new ProductResponseDto(
+      product.id,
+      product.name,
+      product.category,
+      product.subcategory,
+      product.condition,
+      product.style,
+      product.description,
+      product.user.firebaseUid,
+      product.status,
+      product.price,
+      product.adress,
+      product.images,
+      product.createdAt,
+      product.updatedAt,
+      product.transactionType
+    )
+  }
+
   async deleteProduct(id: string): Promise<void> {
     const existingProduct = await this.productRepository.findById(id);
 

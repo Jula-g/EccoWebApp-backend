@@ -11,9 +11,9 @@ export class MatchService {
         private readonly matchRepository: MatchRepository,
         private readonly likeRepository: LikeRepository,
         private readonly productRepository: ProductRepository,
-    ) {}
+    ) { }
 
-    async likeProduct(likedById: string, productId: string): Promise<boolean> {
+    async likeProduct(likedById: string, productId: string): Promise<{ success: boolean; ownerId: string; reverseProductId?: string }> {
         const product = await this.productRepository.findById(productId);
         if (!product) {
             throw new NotFoundException(`Product with ID ${productId} not found.`);
@@ -27,19 +27,27 @@ export class MatchService {
 
         await this.likeRepository.saveLike(productId, likedById, ownerId);
 
-        const reverseLike = await this.likeRepository.findReverseLike(productId, likedById);
+        const reverseLike = await this.likeRepository.findReverseLike(ownerId, likedById);
         if (reverseLike) {
             const match = {
                 productId1: reverseLike.productId,
                 productId2: productId,
-                user1Id: reverseLike.likedById,
+                user1Id: likedById,
                 user2Id: ownerId,
             };
 
             await this.matchRepository.saveMatch(match);
-            return true; 
+            return {
+                success: true,
+                ownerId,
+                reverseProductId: reverseLike.productId,
+            };
         }
 
-        return false;
+        return {
+            success: false,
+            ownerId,
+            reverseProductId: null,
+        };
     }
 }
