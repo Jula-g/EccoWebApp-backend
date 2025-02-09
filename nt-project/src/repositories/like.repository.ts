@@ -19,9 +19,9 @@ export class LikeRepository {
         return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     }
 
-    async findReverseLike(productId: string, userId: string): Promise<any | null> {
+    async findReverseLike(ownerId: string, userId: string): Promise<any | null> {
         const snapshot = await this.collection
-            .where('productId', '==', productId)
+            .where('likedById', '==', ownerId)
             .where('ownerId', '==', userId)
             .get();
         return snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
