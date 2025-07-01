@@ -16,7 +16,7 @@ Styling: CSS, TypeScript, MUI
 
 ### Backend (Service Layer)
 
-Technology: Java Spring Boot, Java, Maven
+Technology: NestJS
 
 ### Database (Persistence Layer)
 
@@ -43,7 +43,6 @@ and gifting unwanted items. The app promotes a circular economy, promoting a com
 ### 1. User Profiles
 
 - Users create profiles that highlight their location and interests (e.g., furniture, electronics, clothing).
-- Each user can set preferences for receiving notifications when items they are interested in become available.
 
 ### 2. Item Categories
 
@@ -97,5 +96,3 @@ The design will be simple, intuitive, and eco-friendly:
   first.
 - Build a Circular Community: Engage people in resource-sharing to minimize overall environmental impact.
 
-This concept offers a foundation for a ZeroWaste Eco Webapp that empowers users to reduce waste through sharing and
-exchanging, aligning with the principles of sustainability and community building.
